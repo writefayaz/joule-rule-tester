@@ -2,10 +2,35 @@
 
 **Test Joule Studio agent extensions (and agents) against their own rules.**
 
-Joule Studio's evaluations run on agents, not on agent extensions. Yet extensions are exactly where
-companies add their own rules to SAP's standard agents: *"treat it as a major incident when more
-than 50 users are affected"*, *"you only advise, never close a ticket"*. Those rules are easy to get
-wrong at exactly 50 users, or when someone pushes hard enough.
+> **Joule Studio tests that your agent works. It doesn't test that your rules are right at the edge,
+> and for extensions it has no structured testing at all.**
+>
+> Joule Studio can test whether your agent works. But the tests that catch real rule mistakes
+> (exactly at the limit, under pressure, after every change) are the ones nobody writes.
+> **joule-rule-tester writes them for you.**
+
+Extensions are where companies add their own rules to SAP's standard agents: *"treat it as a major
+incident when more than 50 users are affected"*, *"you only advise, never close a ticket"*. An AI agent
+interprets these rules rather than executing them, so the risky cases are exactly at 50 users, and when
+someone pushes hard enough.
+
+### What Joule Studio tests, and what this adds
+
+| | Joule Studio | joule-rule-tester |
+|---|---|---|
+| Agent: does the code work? (structure, server, tool calls, formatting) | ✓ generated tests, traces, logs | – |
+| Agent: is each business rule right at the limit (49 / 50 / 51)? | Only if you write those Evaluations yourself | ✓ written for every rule |
+| Agent: does it refuse to change data under pressure? | Only if you write them yourself | ✓ five pressure styles, with a follow-up |
+| Extension: any structured testing? | ✗ manual try in Joule + functional sign-off | ✓ test cases, automated run or sign-off sheet, score |
+| Re-run the same checks after every change | Manual | ✓ one command, CI-ready |
+
+### When you need it, and when you don't
+
+- **Use it** when an agent or extension has several rules with limits, changes often, must not change
+  data, or needs evidence for a business sign-off or an audit.
+- **Skip it** for a single simple rule you can check by hand in a minute; testing in the Joule UI is enough there.
+
+### What it does
 
 `joule-rule-tester` reads the instructions, finds every numeric limit and every read-only rule, and:
 
