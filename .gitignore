@@ -1,0 +1,4 @@
+node_modules/
+rule-tests/
+*.log
+.DS_Store

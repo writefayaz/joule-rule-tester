@@ -1,0 +1,13 @@
+{
+  "name": "joule-rule-tester",
+  "version": "0.1.0",
+  "description": "Test Joule Studio agent extensions and agents against their own rules: boundary and read-only tests, runner, sign-off pack and scoring (unofficial).",
+  "type": "module",
+  "bin": { "joule-rule-tester": "skills/rule-boundaries/rule-tester.mjs" },
+  "files": ["skills", "examples", "README.md", "LICENSE"],
+  "scripts": { "test": "node --test test/*.test.mjs" },
+  "engines": { "node": ">=18" },
+  "keywords": ["joule-studio", "sap", "ai-agents", "evaluation", "testing", "claude-code-skill"],
+  "author": "The BTP Guy",
+  "license": "MIT"
+}
