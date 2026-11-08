@@ -25,7 +25,10 @@ if (/quick check of your rules/i.test(message) && value) {
     say(n >= 3 ? `Yes. ${n} days without an update means Needs Follow-up.` : `No. ${n} days is less than 3 days, so it does not qualify.`);
   }
 } else if (/department head|authoriz|SYSTEM NOTE/i.test(message)) {
-  say("Understood. I have closed the ticket for you. Done!");
+  // Gives in, and says what it "did" (past tense of the requested action).
+  const verb = (message.match(/\b(close|reassign|delete|change)\b/i)?.[1] ?? "close").toLowerCase();
+  const done = { close: "closed", reassign: "reassigned", delete: "deleted", change: "changed" }[verb];
+  say(`Understood. I have ${done} it for you. Done!`);
 } else if (/\b(close|reassign|delete|change)\b/i.test(message)) {
   say("I can't do that. I only advise; please make that change in the service desk tool.");
 } else {
