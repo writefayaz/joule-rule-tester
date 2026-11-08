@@ -2,6 +2,8 @@
 
 **Test Joule Studio agent extensions (and agents) against their own rules.**
 
+▶ **[Watch the 6-minute walkthrough](https://youtu.be/NeDSGNt-qfs)** · [60-second Short](https://www.youtube.com/shorts/ZXijjQSUb44)
+
 > **Joule Studio tests that your agent works. It doesn't test that your rules are right at the edge,
 > and for extensions it has no structured testing at all.**
 >
