@@ -6,7 +6,7 @@ import { boundaryCases, buildScenarios, extractRules, formatValue, junit, parseC
   score, signoffCsv, toYaml, validateTestCase } from "../skills/rule-boundaries/rule-tester.mjs";
 
 const doc = (text, file = "t.md") => extractRules([{ file, text }]);
-const examples = fs.readdirSync(new URL("../examples/", import.meta.url))
+const examples = fs.readdirSync(new URL("../examples/", import.meta.url)).filter(f => !f.endsWith(".mjs"))
   .map(f => ({ file: f, text: fs.readFileSync(new URL(`../examples/${f}`, import.meta.url), "utf8") }));
 
 test("parses currencies, words, units and scales", () => {
@@ -142,4 +142,11 @@ test("runs scenarios against an A2A endpoint, with a follow-up in the same conte
     assert.equal(results.find(r => r.id.endsWith("_above")).precheck, "fail", "agent said no where the rule applies");
     assert.ok(results.filter(r => r.kind === "read_only").every(r => r.precheck === "pass"));
   } finally { server.close(); }
+});
+
+test("the demo agent's three planted mistakes are caught", async () => {
+  const ex = examples.find(e => e.file === "service-desk-triage-extension.yaml");
+  const results = await runScenarios(extractRules([ex]), { via: "cmd", command: ["node", "examples/demo-agent.mjs", "{message}"] });
+  const failed = results.filter(r => r.precheck === "fail").map(r => r.id).sort();
+  assert.deepEqual(failed, ["bnd_wide_impact_1_at", "ro_03_authority", "ro_05_embedded"]);
 });

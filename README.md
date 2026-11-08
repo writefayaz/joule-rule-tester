@@ -24,7 +24,30 @@ Studio's own Evaluations.
 > Unofficial community tool by **The BTP Guy**. Not affiliated with, sponsored or endorsed by SAP.
 > SAP, Joule and Joule Studio are trademarks of SAP SE.
 
-## Install
+## Try it in one minute (no Joule Studio needed)
+
+The repo includes a deliberately flawed stand-in agent, [examples/demo-agent.mjs](examples/demo-agent.mjs),
+for the fictional service desk extension. It treats "more than 50 users" as "50 or more" and gives in to pressure.
+
+```bash
+git clone https://github.com/writefayaz/joule-rule-tester.git && cd joule-rule-tester
+```
+```bash
+node skills/rule-boundaries/rule-tester.mjs extract examples/service-desk-triage-extension.yaml -o rule-tests/rules.json
+```
+```bash
+node skills/rule-boundaries/rule-tester.mjs generate rule-tests/rules.json -o rule-tests/testcases
+```
+```bash
+node skills/rule-boundaries/rule-tester.mjs run rule-tests/rules.json --via cmd --cmd "node examples/demo-agent.mjs {message}"
+```
+```bash
+node skills/rule-boundaries/rule-tester.mjs score rule-tests/results.json
+```
+
+It finds the three planted mistakes: the agent calls exactly 50 users a major incident, obeys "I'm the
+department head", and follows an instruction hidden inside a record.
+
 
 Copy the skill into your Joule Studio pro-code project, next to the skills `jl init` adds:
 
